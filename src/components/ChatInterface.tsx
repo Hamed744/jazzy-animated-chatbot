@@ -7,6 +7,8 @@ import { useToast } from "@/hooks/use-toast";
 import ChatSidebar from "./ChatSidebar";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
+import ModelSelector from "./ModelSelector";
+import { sendToGemini } from "@/services/geminiService";
 import chatBackground from "@/assets/chat-background.jpg";
 
 interface Message {
@@ -30,6 +32,7 @@ export default function ChatInterface() {
   const [currentChatId, setCurrentChatId] = useState<string | undefined>();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("gemini-1.5-flash");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -55,7 +58,7 @@ export default function ChatInterface() {
   const createNewChat = () => {
     const newChat: Chat = {
       id: `chat_${Date.now()}`,
-      title: "چت جدید",
+      title: "گفتگوی جدید",
       timestamp: new Date(),
       messages: [],
       isStarred: false
@@ -66,8 +69,8 @@ export default function ChatInterface() {
     setIsSidebarOpen(false);
 
     toast({
-      title: "چت جدید ایجاد شد",
-      description: "چت جدید آماده استفاده است.",
+      title: "گفتگوی جدید ایجاد شد",
+      description: "گفتگوی جدید آماده استفاده است.",
     });
   };
 
@@ -89,8 +92,9 @@ export default function ChatInterface() {
     }
 
     toast({
-      title: "چت حذف شد",
-      description: "چت با موفقیت حذف شد.",
+      title: "گفتگو حذف شد",
+      description: "گفتگو با موفقیت حذف شد.",
+      variant: "destructive",
     });
   };
 
@@ -164,19 +168,19 @@ export default function ChatInterface() {
       )
     );
 
-    // Simulate AI response
-    setTimeout(() => {
-      const responses = [
-        "سلام! من یک دستیار هوشمند هستم. چگونه می‌توانم به شما کمک کنم؟",
-        "این سوال بسیار جالبی است. بگذارید در مورد آن فکر کنم...",
-        "متشکرم که با من در میان گذاشتید. این موضوع را بررسی می‌کنم.",
-        "درک می‌کنم که به دنبال پاسخی هستید. اجازه دهید توضیح کاملی ارائه دهم.",
-        "بسیار عالی! این نکته‌ای است که ارزش بحث دارد."
-      ];
+    // Get AI response from Gemini
+    try {
+      const chatHistory = currentChat?.messages?.filter(m => !m.isTyping) || [];
+      const conversationHistory = [...chatHistory, userMessage].map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
 
+      const aiResponseText = await sendToGemini(conversationHistory, selectedModel);
+      
       const aiResponse: Message = {
         id: `msg_${Date.now()}_ai`,
-        content: responses[Math.floor(Math.random() * responses.length)],
+        content: aiResponseText,
         role: "assistant",
         timestamp: new Date()
       };
@@ -193,20 +197,38 @@ export default function ChatInterface() {
       );
 
       setIsTyping(false);
-    }, 1500 + Math.random() * 2000);
+    } catch (error) {
+      console.error("Error getting AI response:", error);
+      const errorMessage: Message = {
+        id: `msg_${Date.now()}_error`,
+        content: `متأسفم، خطایی رخ داد: ${error instanceof Error ? error.message : 'خطای نامشخص'}`,
+        role: "assistant",
+        timestamp: new Date()
+      };
+
+      setChats(prev =>
+        prev.map(chat =>
+          chat.id === currentChatId
+            ? {
+                ...chat,
+                messages: chat.messages.slice(0, -1).concat(errorMessage)
+              }
+            : chat
+        )
+      );
+
+      setIsTyping(false);
+      toast({
+        title: "خطا در دریافت پاسخ",
+        description: "لطفاً دوباره تلاش کنید.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
-    <div 
-      className="flex h-screen w-full bg-gradient-to-br from-background to-muted/30 relative"
-      style={{
-        backgroundImage: `url(${chatBackground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundBlendMode: 'overlay'
-      }}
-    >
-      <div className="absolute inset-0 bg-background/90 backdrop-blur-sm" />
+    <div className="flex h-screen w-full bg-background relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
       
       <div className="relative flex w-full h-full z-10">
         {/* Sidebar */}
@@ -224,7 +246,7 @@ export default function ChatInterface() {
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border bg-card/50 backdrop-blur-sm">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-card shadow-sm">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -237,7 +259,7 @@ export default function ChatInterface() {
             
             <div>
               <h1 className="text-lg font-semibold gradient-text">
-                {currentChat?.title || "چت‌بات هوشمند"}
+                چت‌بات هوش مصنوعی آلفا
               </h1>
               {isTyping && (
                 <p className="text-xs text-muted-foreground animate-pulse">
@@ -247,13 +269,19 @@ export default function ChatInterface() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="h-5 w-5" />
-            </Button>
+          <div className="flex items-center gap-4">
+            <ModelSelector 
+              selectedModel={selectedModel} 
+              onModelChange={setSelectedModel} 
+            />
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon">
+                <Settings className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -267,10 +295,10 @@ export default function ChatInterface() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold gradient-text mb-2">
-                    به چت‌بات هوشمند خوش آمدید!
+                    به چت‌بات هوش مصنوعی آلفا خوش آمدید!
                   </h2>
                   <p className="text-muted-foreground max-w-md mx-auto">
-                    من اینجا هستم تا به سوالات شما پاسخ دهم، فایل‌هایتان را تحلیل کنم و در هر موضوعی که نیاز دارید کمکتان کنم.
+                    من با قدرت هوش مصنوعی جیمینای، آماده‌ام تا به سوالات شما پاسخ دهم، فایل‌هایتان را تحلیل کنم و در هر موضوعی کمکتان کنم.
                   </p>
                 </div>
                 

@@ -75,7 +75,7 @@ export default function ChatSidebar({
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           {isOpen && (
-            <h2 className="text-lg font-semibold gradient-text">چت‌ها</h2>
+            <h2 className="text-lg font-semibold gradient-text">گفتگوها</h2>
           )}
           <Button
             variant="ghost"
@@ -97,7 +97,7 @@ export default function ChatSidebar({
             )}
           >
             <Plus className="h-4 w-4" />
-            {isOpen && <span className="mr-2">چت جدید</span>}
+            {isOpen && <span className="mr-2">گفتگوی جدید</span>}
           </Button>
         </div>
 
@@ -182,7 +182,7 @@ export default function ChatSidebar({
           <div className="border-t border-border p-4">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <History className="h-4 w-4" />
-              <span>{chats.length} چت ذخیره شده</span>
+              <span>{chats.length} گفتگوی ذخیره شده</span>
             </div>
           </div>
         )}
