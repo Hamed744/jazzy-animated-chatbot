@@ -32,7 +32,7 @@ export default function ChatInterface() {
   const [currentChatId, setCurrentChatId] = useState<string | undefined>();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("gemini-1.5-flash");
+  const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 

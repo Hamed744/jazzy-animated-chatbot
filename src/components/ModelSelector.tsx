@@ -8,9 +8,14 @@ interface ModelSelectorProps {
 }
 
 const models = [
-  { id: "gemini-1.5-flash", name: "Gemini 1.5 Flash", description: "سریع و کارآمد" },
-  { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro", description: "قدرتمند و دقیق" },
-  { id: "gemini-1.0-pro", name: "Gemini 1.0 Pro", description: "پایدار و قابل اعتماد" },
+  { id: "gemini-2.5-pro", name: "Gemini 2.5 Pro", description: "قدرتمندترین مدل با دقت بالا" },
+  { id: "gemini-2.5-flash", name: "Gemini 2.5 Flash", description: "بهترین نسبت قیمت و عملکرد" },
+  { id: "gemini-2.5-flash-lite", name: "Gemini 2.5 Flash-Lite", description: "مقرون به صرفه و سریع" },
+  { id: "gemini-2.0-flash", name: "Gemini 2.0 Flash", description: "نسل بعدی سرعت و قابلیت‌ها" },
+  { id: "gemini-2.0-flash-lite", name: "Gemini 2.0 Flash-Lite", description: "کارآمد و کم تأخیر" },
+  { id: "gemini-1.5-flash", name: "Gemini 1.5 Flash", description: "سریع و همه منظوره" },
+  { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro", description: "استدلال پیچیده" },
+  { id: "gemini-1.5-flash-8b", name: "Gemini 1.5 Flash-8B", description: "حجم بالا و هوش کمتر" },
 ];
 
 export default function ModelSelector({ selectedModel, onModelChange }: ModelSelectorProps) {

@@ -15,13 +15,13 @@ interface GeminiRequest {
 
 export async function sendToGemini(
   messages: { role: "user" | "assistant"; content: string }[],
-  model: string = "gemini-1.5-flash"
+  model: string = "gemini-2.5-flash"
 ): Promise<string> {
-  // Get API key from environment variables (Hugging Face Spaces secrets)
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+  // Get API key from environment variables (Render.com environment variables)
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    throw new Error("کلید API جیمینای یافت نشد. لطفاً در تنظیمات اسپیس خود کلید را اضافه کنید.");
+    throw new Error("کلید API جیمینای یافت نشد. لطفاً کلید VITE_GEMINI_API_KEY را در متغیرهای محیطی Render.com اضافه کنید.");
   }
 
   // Convert messages to Gemini format
