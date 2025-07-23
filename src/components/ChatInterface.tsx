@@ -246,7 +246,7 @@ export default function ChatInterface() {
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border bg-card shadow-sm">
+        <div className="flex items-center justify-between p-3 border-b border-border bg-background">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -257,31 +257,21 @@ export default function ChatInterface() {
               <Menu className="h-5 w-5" />
             </Button>
             
-            <div>
-              <h1 className="text-lg font-semibold gradient-text">
-                چت‌بات هوش مصنوعی آلفا
+            <div className="text-center flex-1">
+              <h1 className="text-lg font-semibold text-foreground">
+                گفتگوی جدید
               </h1>
-              {isTyping && (
-                <p className="text-xs text-muted-foreground animate-pulse">
-                  در حال تایپ کردن...
-                </p>
-              )}
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <ModelSelector 
               selectedModel={selectedModel} 
               onModelChange={setSelectedModel} 
             />
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="h-5 w-5" />
-              </Button>
-            </div>
+            <Button variant="ghost" size="icon" className="w-8 h-8">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
           </div>
         </div>
 
@@ -289,35 +279,17 @@ export default function ChatInterface() {
         <ScrollArea className="flex-1 px-4">
           <div className="max-w-4xl mx-auto py-6 space-y-6">
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-12">
-                <div className="w-20 h-20 rounded-full bg-gradient-primary flex items-center justify-center shadow-glow">
-                  <span className="text-2xl text-primary-foreground">🤖</span>
+              <div className="flex flex-col items-center justify-center h-full text-center space-y-8 py-20">
+                <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center">
+                  <span className="text-xl text-background">G</span>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold gradient-text mb-2">
-                    به چت‌بات هوش مصنوعی آلفا خوش آمدید!
+                  <h2 className="text-2xl text-foreground mb-2">
+                    سلام، چت‌بات هوش مصنوعی آلفا
                   </h2>
-                  <p className="text-muted-foreground max-w-md mx-auto">
-                    من با قدرت هوش مصنوعی جیمینای، آماده‌ام تا به سوالات شما پاسخ دهم، فایل‌هایتان را تحلیل کنم و در هر موضوعی کمکتان کنم.
+                  <p className="text-muted-foreground text-lg">
+                    چگونه می‌توانم به شما کمک کنم؟
                   </p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
-                  {[
-                    "سوال کلی بپرسید",
-                    "فایلی برای تحلیل بفرستید", 
-                    "درباره یک موضوع صحبت کنید",
-                    "کمک در حل مسئله بخواهید"
-                  ].map((suggestion, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      className="p-4 h-auto text-right justify-start hover:shadow-card transition-all duration-200"
-                      onClick={() => sendMessage(suggestion)}
-                    >
-                      {suggestion}
-                    </Button>
-                  ))}
                 </div>
               </div>
             ) : (

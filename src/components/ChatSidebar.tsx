@@ -67,33 +67,33 @@ export default function ChatSidebar({
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed right-0 top-0 h-full w-80 bg-card border-l border-border z-50 transform transition-transform duration-300 ease-in-out md:relative md:transform-none",
+          "fixed right-0 top-0 h-full w-64 bg-background border-l border-border z-50 transform transition-transform duration-300 ease-in-out md:relative md:transform-none",
           isOpen ? "translate-x-0" : "translate-x-full md:translate-x-0",
           !isOpen && "md:w-16"
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
+        <div className="flex items-center justify-between p-3 border-b border-border">
           {isOpen && (
-            <h2 className="text-lg font-semibold gradient-text">گفتگوها</h2>
+            <h2 className="text-lg font-semibold text-foreground">گفتگوها</h2>
           )}
           <Button
             variant="ghost"
             size="icon"
             onClick={onToggle}
-            className="hover:bg-primary/10"
+            className="hover:bg-accent"
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
 
         {/* New Chat Button */}
-        <div className="p-4">
+        <div className="p-3">
           <Button
             onClick={onNewChat}
             className={cn(
-              "bg-gradient-primary hover:shadow-glow transition-all duration-300",
-              isOpen ? "w-full" : "w-8 h-8 p-0"
+              "bg-foreground text-background hover:bg-foreground/90 transition-all duration-200 rounded-lg",
+              isOpen ? "w-full h-10" : "w-8 h-8 p-0"
             )}
           >
             <Plus className="h-4 w-4" />
@@ -108,10 +108,10 @@ export default function ChatSidebar({
               <div
                 key={chat.id}
                 className={cn(
-                  "group relative p-3 rounded-lg cursor-pointer transition-all duration-200 animate-slide-in-up",
+                  "group relative p-3 rounded-lg cursor-pointer transition-all duration-200",
                   currentChatId === chat.id
-                    ? "bg-primary/10 border border-primary/20"
-                    : "hover:bg-muted/50",
+                    ? "bg-accent"
+                    : "hover:bg-accent/50",
                   !isOpen && "w-12 h-12 p-2 mx-auto"
                 )}
                 onClick={() => onSelectChat(chat.id)}

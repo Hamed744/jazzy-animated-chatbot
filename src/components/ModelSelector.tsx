@@ -17,33 +17,28 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
   const currentModel = models.find(m => m.id === selectedModel);
 
   return (
-    <div className="flex items-center gap-3 animate-fade-in">
-      <Badge variant="secondary" className="text-xs">
-        مدل هوش مصنوعی
-      </Badge>
-      <Select value={selectedModel} onValueChange={onModelChange}>
-        <SelectTrigger className="w-[200px] bg-card border-border hover:bg-accent/50 transition-all duration-200">
-          <SelectValue placeholder="انتخاب مدل">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">{currentModel?.name}</span>
+    <Select value={selectedModel} onValueChange={onModelChange}>
+      <SelectTrigger className="w-[140px] h-8 bg-background border border-border rounded-lg text-sm font-medium hover:bg-accent/50 transition-all duration-200">
+        <SelectValue placeholder="انتخاب مدل">
+          <div className="flex items-center gap-1">
+            <span className="text-sm">{currentModel?.name}</span>
+          </div>
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent className="bg-background border-border shadow-lg rounded-lg">
+        {models.map((model) => (
+          <SelectItem 
+            key={model.id} 
+            value={model.id}
+            className="hover:bg-accent cursor-pointer transition-colors text-right"
+          >
+            <div className="flex flex-col items-end gap-1">
+              <span className="font-medium text-sm">{model.name}</span>
+              <span className="text-xs text-muted-foreground">{model.description}</span>
             </div>
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent className="bg-card border-border shadow-lg">
-          {models.map((model) => (
-            <SelectItem 
-              key={model.id} 
-              value={model.id}
-              className="hover:bg-accent/50 cursor-pointer transition-colors"
-            >
-              <div className="flex flex-col items-end gap-1">
-                <span className="font-medium">{model.name}</span>
-                <span className="text-xs text-muted-foreground">{model.description}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
