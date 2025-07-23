@@ -78,7 +78,7 @@ export default function ChatMessage({ message, className }: ChatMessageProps) {
   return (
     <div
       className={cn(
-        "group relative flex gap-4 p-4 message-slide-in",
+        "group relative flex gap-4 p-4 message-slide-in message-hover",
         isUser ? "flex-row-reverse" : "flex-row",
         className
       )}
@@ -88,13 +88,13 @@ export default function ChatMessage({ message, className }: ChatMessageProps) {
       {/* Avatar */}
       <div
         className={cn(
-          "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
+          "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium scale-hover",
           isUser
-            ? "bg-gradient-primary text-primary-foreground shadow-card"
-            : "bg-muted text-muted-foreground"
+            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white glow-effect shimmer"
+            : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-2 border-gray-300"
         )}
       >
-        {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+        {isUser ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
       </div>
 
       {/* Message Content */}

@@ -39,24 +39,29 @@
 
     --radius: 0.75rem;
 
-    /* Clean ChatGPT-like design */
-    --gradient-primary: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 20%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(0 0% 20%) 100%);
+    /* Beautiful gradients and animations */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(263 82% 58%), hsl(300 70% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(263 82% 58%) 50%, hsl(300 70% 65%) 100%);
     --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    --gradient-user: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 65%));
+    --gradient-bot: linear-gradient(135deg, hsl(210 40% 96%), hsl(210 40% 98%));
     
     /* Chat specific colors */
-    --chat-user: 0 0% 0%;
+    --chat-user: 217 91% 60%;
     --chat-user-foreground: 0 0% 100%;
-    --chat-bot: 0 0% 97%;
+    --chat-bot: 210 40% 97%;
     --chat-bot-foreground: 0 0% 0%;
     
     /* Animation variables */
     --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --animation-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --animation-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     
-    /* Minimal shadows */
-    --shadow-glow: 0 1px 3px 0 hsl(0 0% 0% / 0.1);
-    --shadow-card: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+    /* Enhanced shadows */
+    --shadow-glow: 0 0 40px hsl(217 91% 70% / 0.4);
+    --shadow-card: 0 4px 20px hsl(217 91% 60% / 0.1);
+    --shadow-floating: 0 20px 40px -12px hsl(217 91% 60% / 0.25);
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 0%;
@@ -134,60 +139,163 @@
 }
 
 @layer components {
-  /* Chat message animations */
+  /* Enhanced chat message animations */
   .typing-animation {
     @apply animate-pulse;
   }
   
   .message-slide-in {
-    animation: slideInUp 0.3s var(--animation-smooth);
+    animation: slideInUp 0.6s var(--animation-spring);
+  }
+  
+  .message-hover {
+    transition: all 0.3s var(--animation-smooth);
+  }
+  
+  .message-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-floating);
   }
   
   .message-bubble-user {
-    @apply bg-[hsl(var(--chat-user))] text-[hsl(var(--chat-user-foreground))];
-    background: var(--gradient-primary);
-    border-radius: 1.5rem 1.5rem 0.5rem 1.5rem;
+    @apply text-[hsl(var(--chat-user-foreground))];
+    background: var(--gradient-user);
+    border-radius: 1.25rem 1.25rem 0.375rem 1.25rem;
     box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .message-bubble-user::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-glass);
+    pointer-events: none;
   }
   
   .message-bubble-bot {
     @apply bg-[hsl(var(--chat-bot))] text-[hsl(var(--chat-bot-foreground))];
-    border-radius: 1.5rem 1.5rem 1.5rem 0.5rem;
+    border-radius: 1.25rem 1.25rem 1.25rem 0.375rem;
     box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--border));
   }
   
   .gradient-text {
-    background: var(--gradient-primary);
+    background: var(--gradient-hero);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
   }
   
   .glow-effect {
     box-shadow: var(--shadow-glow);
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+  
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  .scale-hover {
+    transition: transform 0.3s var(--animation-bounce);
+  }
+  
+  .scale-hover:hover {
+    transform: scale(1.05);
+  }
+  
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  .bounce-in {
+    animation: bounceIn 0.8s var(--animation-bounce);
+  }
+  
+  .fade-in-scale {
+    animation: fadeInScale 0.5s var(--animation-smooth);
   }
 }
 
 @keyframes slideInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes typing {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
+  0%, 60%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
   }
-  40% {
-    transform: translateY(-10px);
+  30% {
+    transform: translateY(-10px) scale(1.2);
+    opacity: 1;
+    box-shadow: 0 0 15px hsl(217 91% 60% / 0.6);
   }
-  60% {
-    transform: translateY(-5px);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: var(--shadow-glow); }
+  100% { box-shadow: 0 0 60px hsl(217 91% 70% / 0.6); }
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(50px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-10px);
+  }
+  70% {
+    transform: scale(0.9) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

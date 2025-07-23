@@ -246,20 +246,20 @@ export default function ChatInterface() {
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b border-border bg-background">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-background/80 backdrop-blur-sm floating">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsSidebarOpen(true)}
-              className="md:hidden"
+              className="md:hidden scale-hover"
             >
               <Menu className="h-5 w-5" />
             </Button>
             
             <div className="text-center flex-1">
-              <h1 className="text-lg font-semibold text-foreground">
-                گفتگوی جدید
+              <h1 className="text-xl font-bold gradient-text">
+                چت‌بات جیمینای هوشمند
               </h1>
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function ChatInterface() {
               selectedModel={selectedModel} 
               onModelChange={setSelectedModel} 
             />
-            <Button variant="ghost" size="icon" className="w-8 h-8">
+            <Button variant="ghost" size="icon" className="w-8 h-8 scale-hover">
               <MoreVertical className="h-4 w-4" />
             </Button>
           </div>
@@ -279,17 +279,35 @@ export default function ChatInterface() {
         <ScrollArea className="flex-1 px-4">
           <div className="max-w-4xl mx-auto py-6 space-y-6">
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center space-y-8 py-20">
-                <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center">
-                  <span className="text-xl text-background">G</span>
+              <div className="flex flex-col items-center justify-center h-full text-center space-y-8 py-20 fade-in-scale">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center glow-effect floating">
+                  <span className="text-2xl font-bold text-white">G</span>
                 </div>
-                <div>
-                  <h2 className="text-2xl text-foreground mb-2">
-                    سلام، چت‌بات هوش مصنوعی آلفا
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold gradient-text floating">
+                    سلام، چت‌بات جیمینای هوشمند
                   </h2>
-                  <p className="text-muted-foreground text-lg">
+                  <p className="text-muted-foreground text-xl">
                     چگونه می‌توانم به شما کمک کنم؟
                   </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto mt-8">
+                  <div className="p-6 border rounded-xl hover:bg-muted/50 cursor-pointer scale-hover message-hover shimmer">
+                    <h3 className="font-semibold mb-2">سوالات عمومی</h3>
+                    <p className="text-sm text-muted-foreground">در مورد موضوعات مختلف سوال بپرسید</p>
+                  </div>
+                  <div className="p-6 border rounded-xl hover:bg-muted/50 cursor-pointer scale-hover message-hover shimmer">
+                    <h3 className="font-semibold mb-2">کمک در برنامه‌نویسی</h3>
+                    <p className="text-sm text-muted-foreground">کد بنویسم یا مشکلات را حل کنم</p>
+                  </div>
+                  <div className="p-6 border rounded-xl hover:bg-muted/50 cursor-pointer scale-hover message-hover shimmer">
+                    <h3 className="font-semibold mb-2">تحلیل متن</h3>
+                    <p className="text-sm text-muted-foreground">متن‌ها را بررسی و تحلیل کنم</p>
+                  </div>
+                  <div className="p-6 border rounded-xl hover:bg-muted/50 cursor-pointer scale-hover message-hover shimmer">
+                    <h3 className="font-semibold mb-2">ترجمه</h3>
+                    <p className="text-sm text-muted-foreground">متن‌ها را به زبان‌های مختلف ترجمه کنم</p>
+                  </div>
                 </div>
               </div>
             ) : (
